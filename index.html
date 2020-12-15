@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <link rel="stylesheet" href="css/leaflet.css">
+        <link rel="stylesheet" href="css/qgis2web.css"><link rel="stylesheet" href="css/fontawesome-all.min.css">
+        <link rel="stylesheet" href="css/leaflet-measure.css">
+        <style>
+        #map {
+            width: 1545px;
+            height: 748px;
+        }
+        </style>
+        <title></title>
+    </head>
+    <body>
+        <div id="map">
+        </div>
+        <script src="js/qgis2web_expressions.js"></script>
+        <script src="js/leaflet.js"></script>
+        <script src="js/leaflet.rotatedMarker.js"></script>
+        <script src="js/leaflet.pattern.js"></script>
+        <script src="js/leaflet-hash.js"></script>
+        <script src="js/Autolinker.min.js"></script>
+        <script src="js/rbush.min.js"></script>
+        <script src="js/labelgun.min.js"></script>
+        <script src="js/labels.js"></script>
+        <script src="js/leaflet-measure.js"></script>
+        <script src="data/HIDROGEOLOGI_0.js"></script>
+        <script src="data/Tubantitikacuan_2.js"></script>
+        <script src="data/coffeshop_3.js"></script>
+        <script>
+        var highlightLayer;
+        function highlightFeature(e) {
+            highlightLayer = e.target;
+
+            if (e.target.feature.geometry.type === 'LineString') {
+              highlightLayer.setStyle({
+                color: '#ffff00',
+              });
+            } else {
+              highlightLayer.setStyle({
+                fillColor: '#ffff00',
+                fillOpacity: 1
+              });
+            }
+        }
+        var map = L.map('map', {
+            zoomControl:true, maxZoom:28, minZoom:1
+        }).fitBounds([[-6.9071808984506,112.02798029741467],[-6.885354468470073,112.07299733380096]]);
+        var hash = new L.Hash(map);
+        map.attributionControl.setPrefix('<a href="https://github.com/tomchadwin/qgis2web" target="_blank">qgis2web</a> &middot; <a href="https://leafletjs.com" title="A JS library for interactive maps">Leaflet</a> &middot; <a href="https://qgis.org">QGIS</a>');
+        var autolinker = new Autolinker({truncate: {length: 30, location: 'smart'}});
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+        .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+        function setBounds() {
+        }
+        function pop_HIDROGEOLOGI_0(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KECAMATAN'] !== null ? autolinker.link(feature.properties['KECAMATAN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['TANAH'] !== null ? autolinker.link(feature.properties['TANAH'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Luas'] !== null ? autolinker.link(feature.properties['Luas'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['GEOLOGI'] !== null ? autolinker.link(feature.properties['GEOLOGI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KECAMATAN_'] !== null ? autolinker.link(feature.properties['KECAMATAN_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FORMASI'] !== null ? autolinker.link(feature.properties['FORMASI'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KABUPATEN'] !== null ? autolinker.link(feature.properties['KABUPATEN'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Luasan'] !== null ? autolinker.link(feature.properties['Luasan'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['KECAMATA_1'] !== null ? autolinker.link(feature.properties['KECAMATA_1'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['AKUIFER'] !== null ? autolinker.link(feature.properties['AKUIFER'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Luasan_2'] !== null ? autolinker.link(feature.properties['Luasan_2'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_HIDROGEOLOGI_0_0(feature) {
+            switch(String(feature.properties['KECAMATAN'])) {
+                case 'Bayat':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(136,106,226,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Cawas':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(234,78,180,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Ceper':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(95,154,237,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Delanggu':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(101,184,232,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Gantiwarno':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(165,106,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jatinom':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(165,20,231,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Jogonalan':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(192,239,104,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Juwiring':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(96,91,216,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kalikotes':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(82,112,233,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Karanganom':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(217,201,49,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Karangdowo':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,68,228,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Karangnongko':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(152,231,132,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kebonarum':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(215,121,39,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Wonosari':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(110,227,218,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Kemalang':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(148,219,93,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Klaten Selatan':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,12,54,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Klaten Tengah':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(219,12,54,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Klaten Utara':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(83,201,113,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Manisrenggo':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(227,176,67,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Ngawen':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(235,113,75,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Pedan':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(88,200,217,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Polanharjo':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(99,238,164,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Prambanan':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(224,94,148,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Trucuk':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(238,61,58,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Tulung':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(209,108,196,1.0)',
+                interactive: true,
+            }
+                    break;
+                case 'Wedi':
+                    return {
+                pane: 'pane_HIDROGEOLOGI_0',
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1.0, 
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(116,240,203,1.0)',
+                interactive: true,
+            }
+                    break;
+            }
+        }
+        map.createPane('pane_HIDROGEOLOGI_0');
+        map.getPane('pane_HIDROGEOLOGI_0').style.zIndex = 400;
+        map.getPane('pane_HIDROGEOLOGI_0').style['mix-blend-mode'] = 'normal';
+        var layer_HIDROGEOLOGI_0 = new L.geoJson(json_HIDROGEOLOGI_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_HIDROGEOLOGI_0',
+            layerName: 'layer_HIDROGEOLOGI_0',
+            pane: 'pane_HIDROGEOLOGI_0',
+            onEachFeature: pop_HIDROGEOLOGI_0,
+            style: style_HIDROGEOLOGI_0_0,
+        });
+        bounds_group.addLayer(layer_HIDROGEOLOGI_0);
+        map.addLayer(layer_HIDROGEOLOGI_0);
+        map.createPane('pane_OpenStreetMap_1');
+        map.getPane('pane_OpenStreetMap_1').style.zIndex = 401;
+        var layer_OpenStreetMap_1 = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            pane: 'pane_OpenStreetMap_1',
+            opacity: 1.0,
+            attribution: '',
+            minZoom: 1,
+            maxZoom: 28,
+            minNativeZoom: 0,
+            maxNativeZoom: 19
+        });
+        layer_OpenStreetMap_1;
+        map.addLayer(layer_OpenStreetMap_1);
+        function pop_Tubantitikacuan_2(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_Tubantitikacuan_2_0() {
+            return {
+                pane: 'pane_Tubantitikacuan_2',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(243,166,178,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_Tubantitikacuan_2');
+        map.getPane('pane_Tubantitikacuan_2').style.zIndex = 402;
+        map.getPane('pane_Tubantitikacuan_2').style['mix-blend-mode'] = 'normal';
+        var layer_Tubantitikacuan_2 = new L.geoJson(json_Tubantitikacuan_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Tubantitikacuan_2',
+            layerName: 'layer_Tubantitikacuan_2',
+            pane: 'pane_Tubantitikacuan_2',
+            onEachFeature: pop_Tubantitikacuan_2,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Tubantitikacuan_2_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_Tubantitikacuan_2);
+        map.addLayer(layer_Tubantitikacuan_2);
+        function pop_coffeshop_3(feature, layer) {
+            layer.on({
+                mouseout: function(e) {
+                    for (i in e.target._eventParents) {
+                        e.target._eventParents[i].resetStyle(e.target);
+                    }
+                },
+                mouseover: highlightFeature,
+            });
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['id'] !== null ? autolinker.link(feature.properties['id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['origin_id'] !== null ? autolinker.link(feature.properties['origin_id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['title'] !== null ? autolinker.link(feature.properties['title'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['label'] !== null ? autolinker.link(feature.properties['label'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['distance'] !== null ? autolinker.link(feature.properties['distance'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['categories'] !== null ? autolinker.link(feature.properties['categories'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {maxHeight: 400});
+        }
+
+        function style_coffeshop_3_0() {
+            return {
+                pane: 'pane_coffeshop_3',
+                radius: 4.0,
+                opacity: 1,
+                color: 'rgba(35,35,35,1.0)',
+                dashArray: '',
+                lineCap: 'butt',
+                lineJoin: 'miter',
+                weight: 1,
+                fill: true,
+                fillOpacity: 1,
+                fillColor: 'rgba(141,90,153,1.0)',
+                interactive: true,
+            }
+        }
+        map.createPane('pane_coffeshop_3');
+        map.getPane('pane_coffeshop_3').style.zIndex = 403;
+        map.getPane('pane_coffeshop_3').style['mix-blend-mode'] = 'normal';
+        var layer_coffeshop_3 = new L.geoJson(json_coffeshop_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_coffeshop_3',
+            layerName: 'layer_coffeshop_3',
+            pane: 'pane_coffeshop_3',
+            onEachFeature: pop_coffeshop_3,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_coffeshop_3_0(feature));
+            },
+        });
+        bounds_group.addLayer(layer_coffeshop_3);
+        map.addLayer(layer_coffeshop_3);
+        var baseMaps = {};
+        L.control.layers(baseMaps,{'<img src="legend/coffeshop_3.png" /> coffe shop': layer_coffeshop_3,'<img src="legend/Tubantitikacuan_2.png" /> Tuban titik acuan': layer_Tubantitikacuan_2,"OpenStreetMap": layer_OpenStreetMap_1,'HIDROGEOLOGI<br /><table><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Bayat0.png" /></td><td>Bayat</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Cawas1.png" /></td><td>Cawas</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Ceper2.png" /></td><td>Ceper</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Delanggu3.png" /></td><td>Delanggu</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Gantiwarno4.png" /></td><td>Gantiwarno</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Jatinom5.png" /></td><td>Jatinom</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Jogonalan6.png" /></td><td>Jogonalan</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Juwiring7.png" /></td><td>Juwiring</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Kalikotes8.png" /></td><td>Kalikotes</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Karanganom9.png" /></td><td>Karanganom</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Karangdowo10.png" /></td><td>Karangdowo</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Karangnongko11.png" /></td><td>Karangnongko</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Kebonarum12.png" /></td><td>Kebonarum</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Wonosari13.png" /></td><td>Wonosari</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Kemalang14.png" /></td><td>Kemalang</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_KlatenSelatan15.png" /></td><td>Klaten Selatan</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_KlatenTengah16.png" /></td><td>Klaten Tengah</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_KlatenUtara17.png" /></td><td>Klaten Utara</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Manisrenggo18.png" /></td><td>Manisrenggo</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Ngawen19.png" /></td><td>Ngawen</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Pedan20.png" /></td><td>Pedan</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Polanharjo21.png" /></td><td>Polanharjo</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Prambanan22.png" /></td><td>Prambanan</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Trucuk23.png" /></td><td>Trucuk</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Tulung24.png" /></td><td>Tulung</td></tr><tr><td style="text-align: center;"><img src="legend/HIDROGEOLOGI_0_Wedi25.png" /></td><td>Wedi</td></tr></table>': layer_HIDROGEOLOGI_0,}).addTo(map);
+        setBounds();
+        </script>
+    </body>
+</html>
